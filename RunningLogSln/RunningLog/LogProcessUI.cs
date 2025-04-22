@@ -109,6 +109,8 @@ public class LogProcessUI
                 System.Console.WriteLine("Item number entered is out of range. Please try again");
                 continue;
              }
+            EditItem(logItem, Logs);
+            SaveLog(Logs);
              break;
             } catch {
                 System.Console.WriteLine("Please enter a number.");
@@ -116,8 +118,7 @@ public class LogProcessUI
           
         }
 
-        EditItem(logItem, Logs);
-        SaveLog(Logs);
+
 
     }
 

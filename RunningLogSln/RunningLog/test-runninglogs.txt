@@ -423,12 +423,12 @@
       "_BMI": 22.81
     },
     {
-      "Duration": 50,
-      "Distance": 5.1,
+      "Duration": 55,
+      "Distance": 5.4,
       "Weight": 154,
       "RunningDate": "2025-03-19T00:00:00",
-      "_pace": 10.22,
-      "_caloriesBurned": 544,
+      "_pace": 10.19,
+      "_caloriesBurned": 638,
       "_BMI": 22.81
     }
   ]
