@@ -9,14 +9,20 @@ public class LogProcessUI
     // public RunningLogs Logs {get; set;}
 
     public void Show(RunningLogs Logs){
+        Console.Clear();
+        System.Console.WriteLine("Welcome " + Logs.GetUser().Username);
         while(true){
-          
-            LogProcessMenu(Logs);
+            Console.WriteLine("Please select option (1/2/3/4): \n1. Input Running Log \n2. Edit Running Log \n3. Review Running Log\n4. Exit");
             string opitonInput =Console.ReadLine().Trim();
             if (opitonInput == "1"){
                 InputLog(Logs);
                 // break;
             } else if(opitonInput == "2"){
+                if(Logs.GetRunningLogList().Count <= 0){
+                    System.Console.WriteLine("No data available");
+                    System.Console.WriteLine();
+                    continue;
+                }
                 System.Console.WriteLine("The following are the running logs: ");
                 for(int i = 0; i<Logs.GetRunningLogList().Count; i++){
                     Running log = Logs.GetRunningLogList()[i];
@@ -46,7 +52,7 @@ public class LogProcessUI
     }
 
     private static void LogProcessMenu(RunningLogs Logs){
-        Console.Clear();
+        
         System.Console.WriteLine("Welcome " + Logs.GetUser().Username);
         Console.WriteLine("Please select option (1/2/3/4): \n1. Input Running Log \n2. Edit Running Log \n3. Review Running Log\n4. Exit");
     }
@@ -223,19 +229,7 @@ public class LogProcessUI
     }
 
 
-    private void EnterWeight( int logItem , RunningLogs Logs){
-        while(true){
-        System.Console.WriteLine("Please enter weight in pounds with max 2 decimals: ");
-        try{
-        Logs.GetRunningLogList()[logItem -1 ].Weight = Math.Round(double.Parse(Console.ReadLine()), 2);
-        break;
-        } catch {
-            System.Console.WriteLine("Numbers are needed. Please try again");
-        }
-        }
 
-
-    }
 
 
     private void SaveLog(RunningLogs Logs){
@@ -246,11 +240,9 @@ public class LogProcessUI
         File.WriteAllText(fileName, logJson);
     }
 
-    private void ReviewLog(RunningLogs Logs){
-        Console.WriteLine();
-        
- 
-        while(true){
+    private void ReviewLog(RunningLogs Logs){     
+            while(true){
+            Console.WriteLine();
             System.Console.WriteLine("Please select review option\n1. View all logs\n2. Review last 7 days\n3. Weekly report\n4. Monthly report\n5. Exit");
             string inputOption = Console.ReadLine();
 
@@ -260,7 +252,11 @@ public class LogProcessUI
             Console.WriteLine();
             if(inputOption =="1"){
                 // ReviewLog
-                 for(int i = 0; i<Logs.GetRunningLogList().Count; i++){
+                if(Logs.GetRunningLogList().Count <=0){
+                    System.Console.WriteLine("No data available");
+                    continue;
+                }
+                for(int i = 0; i<Logs.GetRunningLogList().Count; i++){
                     Running log = Logs.GetRunningLogList()[i];
                     System.Console.WriteLine((i+1).ToString() + ". " + log.RunningDate.ToString("MM/dd/yyy") + ": " 
                     + log.Duration.ToString() + " mins; " + log.Distance.ToString() + " miles; " + log.GetPace() + " min/mile; " + log.GetCaloriesBurned() + " calories burned");
@@ -273,7 +269,12 @@ public class LogProcessUI
             }else if(inputOption == "2")
             {
 
+                if(Logs.GetLatestSevendays().Count <=0){
+                    System.Console.WriteLine("No data available");
+                    continue;
+                }
                 List<Running> latestLogs = Logs.GetLatestSevendays();
+                
                 List<double> summaries = Logs.GetSummary(latestLogs);
                 System.Console.WriteLine("Your reports for latest 7 days:");
                 System.Console.WriteLine("You have run " + latestLogs.Count + " days in the past 7 days");
@@ -288,26 +289,24 @@ public class LogProcessUI
                 // continue;
                 
             }else if(inputOption == "3"){
+                if( Logs.GetWeeklyLogs().Count <=0){
+                    System.Console.WriteLine("No data available");
+                    continue;
+                }   
                 List<Dictionary<string, List<Running>>> weekLogsList = Logs.GetWeeklyLogs();
+             
                 System.Console.WriteLine("Your weekly report:");
-                // foreach(var item in weekLogsList){
-                    
-                //     foreach(string key in item.Keys){
-                //         System.Console.WriteLine(key);
-                    
-                //         List<double> summaries = Logs.GetSummary(item[key]);
-                        
-                //         System.Console.WriteLine("You have run " + item[key].Count + " days in " + key);
-                //         PrintReport(summaries);
-                //     }
 
-                // }
                 PeriodReport(weekLogsList, Logs);
                 System.Console.WriteLine("Press any key back");                
                 Console.ReadKey();
             }
             else if(inputOption == "4")
             {
+                if( Logs.GetMonthlyLogs().Count <=0){
+                    System.Console.WriteLine("No data available");
+                    continue;
+                }  
                 List<Dictionary<string, List<Running>>> monthLogsList = Logs.GetMonthlyLogs();
                 System.Console.WriteLine("Your monthly report:");
                 PeriodReport(monthLogsList, Logs);

@@ -42,7 +42,11 @@ public class RunningLogs{
     public List<Running> GetLatestSevendays(){
         List<Running> LatestLogs = new List<Running>();
         int length = _runninglogList.Count;
-        if(length <= 7){
+        if(length <= 0){
+            return LatestLogs;
+
+        }
+        else if(length <= 7){
             LatestLogs =  _runninglogList;
         }
         else{
@@ -56,6 +60,10 @@ public class RunningLogs{
     }
 
     public List<Dictionary<string, List<Running>>> GetMonthlyLogs(){
+        List<Dictionary<string, List<Running>>> monthLogsList = new List<Dictionary<string, List<Running>>>();
+        if(_runninglogList.Count <= 0 ){
+            return monthLogsList;
+        }
 
         
         int month = _runninglogList[0].RunningDate.Month;
@@ -64,7 +72,7 @@ public class RunningLogs{
 
         // Dictionary<string, List<Running>> monthLogs = new Dictionary<string, List<Running>>();
 
-        List<Dictionary<string, List<Running>>> monthLogsList = new List<Dictionary<string, List<Running>>>();
+        
         int count = 0;
         monthLogsList.Add(new Dictionary<string, List<Running>>());
         monthLogsList[count].Add(month + "/" + year, new List<Running>());
@@ -108,7 +116,10 @@ public class RunningLogs{
 
         CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
         DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
-
+        List<Dictionary<string, List<Running>>> weekLogsList = new List<Dictionary<string, List<Running>>>();
+        if(_runninglogList.Count <=0){
+            return weekLogsList;
+        }
         
         int weeknumber = myCal.GetWeekOfYear(_runninglogList[0].RunningDate, myCWR, myFirstDOW );
         int year =  _runninglogList[0].RunningDate.Year;
@@ -116,7 +127,7 @@ public class RunningLogs{
 
         // Dictionary<string, List<Running>> monthLogs = new Dictionary<string, List<Running>>();
 
-        List<Dictionary<string, List<Running>>> weekLogsList = new List<Dictionary<string, List<Running>>>();
+        
         int count = 0;
         weekLogsList.Add(new Dictionary<string, List<Running>>());
         weekLogsList[count].Add("week " + weeknumber + "/" + year, new List<Running>());
