@@ -8,7 +8,7 @@ using System.Text.Json;
 
 public class RunningLogUI
 {
-    private RunningLogs _runlingLogs;
+    private RunningLogs _runningLogs;
     // private SaveFile _saveFile;
     private LogInUI logUI;
     private CreateAccountUI accoutUI;
@@ -16,7 +16,7 @@ public class RunningLogUI
     private LogProcessUI processUI;
 
     public RunningLogUI(){
-        _runlingLogs = new RunningLogs();
+        _runningLogs = new RunningLogs();
         logUI = new LogInUI();
         accoutUI = new CreateAccountUI();
         processUI = new LogProcessUI();
@@ -31,14 +31,14 @@ public class RunningLogUI
             StartPrompt();
             string opiton =Console.ReadLine().Trim();
             if (opiton == "1"){
-                _runlingLogs = logUI.Show();
+               _runningLogs = logUI.Show();
               
                 break;
             } else if(opiton == "2"){
                 accoutUI.Show();
                 Console.Clear();
                 System.Console.WriteLine("Please Log in");
-                _runlingLogs = logUI.Show();
+                _runningLogs = logUI.Show();
                 break;
             } else if(opiton == "3"){
                 System.Console.WriteLine("Goodbye!");
@@ -50,9 +50,9 @@ public class RunningLogUI
 
         }
 
- 
 
-    processUI.Show(_runlingLogs);
+
+        processUI.Show(_runningLogs);
     
     }
 

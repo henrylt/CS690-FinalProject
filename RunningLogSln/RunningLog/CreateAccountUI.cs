@@ -16,7 +16,7 @@ public class CreateAccountUI
 
     public void Show(){
         
-        User tempUser = new User();
+        // User tempUser = new User();
         // username
         while(true){
         System.Console.WriteLine("Please input username: ");
@@ -25,8 +25,8 @@ public class CreateAccountUI
             System.Console.WriteLine("Input is empty, please try again.");
             continue;
         }
-        if (!File.Exists(username+"-runninglogs.txt")){
-            tempUser.Username = username;
+        if (!User.IsUsernameExist(username)){
+            _runningLogs.GetUser().Username = username;
             break;
 
         }
@@ -43,7 +43,7 @@ public class CreateAccountUI
             string pswd2 = PswdProcess();
           
             if(pswd.Equals(pswd2)){
-           tempUser.Password = pswd2;
+            _runningLogs.GetUser().Password = pswd2;
             break;
             }
             System.Console.WriteLine("Password didn't match. Please try again");
@@ -60,7 +60,7 @@ public class CreateAccountUI
                 System.Console.WriteLine("Age entered is too small or too large, please try again");
                 continue;
               }
-              tempUser.Age = age;
+              _runningLogs.GetUser().Age = age;
               break;
             } catch{
                 System.Console.WriteLine("Illegal input, please try again.");
@@ -78,7 +78,7 @@ public class CreateAccountUI
                 System.Console.WriteLine("Weight entered is too small, please try again");
                 continue;
               }
-              tempUser.Weight = weight;
+              _runningLogs.GetUser().Weight = weight;
               break;
             } catch{
                 System.Console.WriteLine("Illegal input, please try again.");
@@ -96,7 +96,7 @@ public class CreateAccountUI
                 System.Console.WriteLine("Height entered is too small, please try again");
                 continue;
               }
-              tempUser.Height = height;
+              _runningLogs.GetUser().Height = height;
               break;
             } catch{
                 System.Console.WriteLine("Illegal input, please try again.");
@@ -111,18 +111,15 @@ public class CreateAccountUI
             string[] genders = {"F", "f", "M", "m"};
               
               if(genders.Contains(gender)){
-                tempUser.Gender = gender.ToUpper();
+                _runningLogs.GetUser().Gender = gender.ToUpper();
                 break;
 
               }
             System.Console.WriteLine("Illegal input, please try again");
         
         }
-        _runningLogs.SetUser(tempUser);
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        var newUserJson = JsonSerializer.Serialize(_runningLogs, options);
-        // System.Console.WriteLine(newUserJson);
-        File.WriteAllText(_runningLogs.GetUser().Username + "-runninglogs.txt", newUserJson);
+       
+        _runningLogs.SaveLogs(); 
     }
     
 
@@ -165,7 +162,7 @@ public static string PswdProcess(){
                 }
             }
         }
-      
+
         return HashCalc(string.Join("", password));        
         
     }

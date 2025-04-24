@@ -405,21 +405,21 @@
       "_BMI": 22.81
     },
     {
-      "Duration": 45,
-      "Distance": 4.3,
+      "Duration": 50,
+      "Distance": 4.8,
       "Weight": 154,
       "RunningDate": "2025-03-17T00:00:00",
-      "_pace": 10.47,
-      "_caloriesBurned": 507,
+      "_pace": 10.42,
+      "_caloriesBurned": 566,
       "_BMI": 22.81
     },
     {
-      "Duration": 44,
+      "Duration": 48,
       "Distance": 4.2,
       "Weight": 154,
       "RunningDate": "2025-03-18T00:00:00",
-      "_pace": 10.48,
-      "_caloriesBurned": 495,
+      "_pace": 11.43,
+      "_caloriesBurned": 492,
       "_BMI": 22.81
     },
     {
@@ -430,6 +430,33 @@
       "_pace": 10.19,
       "_caloriesBurned": 638,
       "_BMI": 22.81
+    },
+    {
+      "Duration": 60,
+      "Distance": 5.4,
+      "Weight": 155,
+      "RunningDate": "2025-04-21T00:00:00",
+      "_pace": 10.87,
+      "_caloriesBurned": 544,
+      "_BMI": 22.95
+    },
+    {
+      "Duration": 50,
+      "Distance": 4.6,
+      "Weight": 155,
+      "RunningDate": "2025-04-22T00:00:00",
+      "_pace": 10.87,
+      "_caloriesBurned": 544,
+      "_BMI": 22.95
+    },
+    {
+      "Duration": 49,
+      "Distance": 5,
+      "Weight": 155,
+      "RunningDate": "2025-04-23T00:00:00",
+      "_pace": 9.8,
+      "_caloriesBurned": 598,
+      "_BMI": 22.95
     }
   ]
 }

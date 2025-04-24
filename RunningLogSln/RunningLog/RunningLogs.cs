@@ -1,22 +1,18 @@
 namespace RunningLog;
 
-using System.Collections.Concurrent;
 using System.IO;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Globalization;
+using System.Security.Cryptography;
 
 public class RunningLogs{
     
      [JsonInclude]
     private User _user; 
      [JsonInclude]
-    private List<Running> _runninglogList ;
-
-    
+    private List<Running> _runninglogList;  
 
     public RunningLogs(){
         _user = new User();
@@ -27,9 +23,9 @@ public class RunningLogs{
         _user = user;
     }
 
-    public void AddRunninglogList(Running running){
-        _runninglogList.Add(running);
-    }
+    // public void AddRunninglogList(Running running){
+    //     _runninglogList.Add(running);
+    // }
 
     public User GetUser(){
         return _user;
@@ -44,18 +40,15 @@ public class RunningLogs{
         int length = _runninglogList.Count;
         if(length <= 0){
             return LatestLogs;
-
         }
-        else if(length <= 7){
-            LatestLogs =  _runninglogList;
-        }
-        else{
-        for(int i=length - 7; i<length; i++){
-            LatestLogs.Add(_runninglogList[i]);
-
-        }
-        }        
-
+        // get log of latest 7 days from today
+        DateTime today = DateTime.Now;
+        foreach(Running logRecord in _runninglogList){
+            int days = (today.Date - logRecord.RunningDate.Date).Days;
+            if(days < 7){
+                LatestLogs.Add(logRecord);
+            }
+        } 
         return LatestLogs;
     }
 
@@ -65,18 +58,12 @@ public class RunningLogs{
             return monthLogsList;
         }
 
-        
         int month = _runninglogList[0].RunningDate.Month;
         int year =  _runninglogList[0].RunningDate.Year;
-
-
-        // Dictionary<string, List<Running>> monthLogs = new Dictionary<string, List<Running>>();
-
         
         int count = 0;
         monthLogsList.Add(new Dictionary<string, List<Running>>());
         monthLogsList[count].Add(month + "/" + year, new List<Running>());
-
 
         foreach(var log in _runninglogList){          
 
@@ -123,10 +110,6 @@ public class RunningLogs{
         
         int weeknumber = myCal.GetWeekOfYear(_runninglogList[0].RunningDate, myCWR, myFirstDOW );
         int year =  _runninglogList[0].RunningDate.Year;
-
-
-        // Dictionary<string, List<Running>> monthLogs = new Dictionary<string, List<Running>>();
-
         
         int count = 0;
         weekLogsList.Add(new Dictionary<string, List<Running>>());
@@ -161,11 +144,6 @@ public class RunningLogs{
             }
         }
 
-        // foreach(var weeklog in weekLogsList){
-        //     foreach(string week in weeklog.Keys){
-        //         System.Console.WriteLine(week);
-        //     }
-        // }
 
        return weekLogsList;
      
@@ -216,5 +194,62 @@ public class RunningLogs{
         return summaries;
 
 
+    }
+
+    public void AddNewLog(DateTime runningDate, double duration, double distance, double weight){
+        Running newLog = new Running();
+        newLog.SetHeight(_user.Height);
+        newLog.RunningDate = runningDate;
+        newLog.Duration = duration;
+        newLog.Distance = distance;
+        newLog.Weight = weight;
+        newLog.calcPace();
+        newLog.calcCaloriesBurned();
+        newLog.calcBMI();        
+        _runninglogList.Add(newLog);
+
+    }
+
+    public void EditLogDuration(int logItem, double duration){     
+        _runninglogList[logItem].Duration = duration;
+        _runninglogList[logItem].calcPace();
+        _runninglogList[logItem].calcCaloriesBurned();
+
+    }
+
+    public void EditLogDistance(int logItem, double distance){
+        _runninglogList[logItem].Distance = distance;
+        _runninglogList[logItem].calcPace();
+        _runninglogList[logItem].calcCaloriesBurned();
+
+    }
+
+    public void RemoveLog(int logItem){
+        _runninglogList.RemoveAt(logItem);
+    }
+
+    public void SaveLogs(){
+        if(_runninglogList.Count > 0){
+            _runninglogList.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
+        }
+        string fileName = _user.Username + "-runninglogs.txt";
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var logJson = JsonSerializer.Serialize(this, options);
+        File.WriteAllText(fileName, logJson);   
+    }
+    public static bool LoadDataFromFile(string fileName, out RunningLogs loadedrunningLogs){
+
+        try {
+            string jsonUser = File.ReadAllText(fileName);
+            if(jsonUser != null){    
+                loadedrunningLogs = JsonSerializer.Deserialize<RunningLogs>(jsonUser);       
+                return true;
+            }  
+            loadedrunningLogs = null;               
+            return false;
+        } catch{
+            loadedrunningLogs = null;   
+            return false;           
+        }
     }
 }

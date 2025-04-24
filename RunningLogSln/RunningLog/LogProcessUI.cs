@@ -51,26 +51,22 @@ public class LogProcessUI
 
     }
 
-    private static void LogProcessMenu(RunningLogs Logs){
-        
-        System.Console.WriteLine("Welcome " + Logs.GetUser().Username);
-        Console.WriteLine("Please select option (1/2/3/4): \n1. Input Running Log \n2. Edit Running Log \n3. Review Running Log\n4. Exit");
-    }
-
     private void InputLog(RunningLogs Logs){
-
-        Running newRunningLog = new Running();
-        User tempUser = Logs.GetUser();
-
-  
-        // System.Console.WriteLine(tempUser.Height);
-        newRunningLog.SetHeight(tempUser.Height);
+        DateTime inputRunningDate = DateTime.Now;
+        double inputDuration = 0;
+        double inputDistance = 0;
+        double inputWeight = 0;
 
         while(true){
 
             System.Console.WriteLine("Please enter date in MM/dd/yyyy:");
             try {string inputDate = Console.ReadLine();
-            newRunningLog.RunningDate = DateTime.ParseExact(inputDate, "d", CultureInfo.InvariantCulture);
+            inputRunningDate = DateTime.ParseExact(inputDate, "d", CultureInfo.InvariantCulture);
+            int result = DateTime.Compare(inputRunningDate, DateTime.Now);
+            if (result > 0){
+                System.Console.WriteLine("Running date should not be later than now. Please try again.");
+                continue;
+            }
             break;
             } catch {
                 System.Console.WriteLine("Wrong date format. Please try again considering leading zeros");
@@ -78,31 +74,34 @@ public class LogProcessUI
         }
 
         //input duration
-        EnterDuration(newRunningLog);
+        inputDuration = EnterDuration();
 
         //input distance
-        EnterDistance(newRunningLog);
+        inputDistance = EnterDistance();
         // input weight
         while(true){
         System.Console.WriteLine("Please enter weight in pounds with max 2 decimals: ");
         try{
-        newRunningLog.Weight = Math.Round(double.Parse(Console.ReadLine()), 2);
+        inputWeight = Math.Round(double.Parse(Console.ReadLine()), 2);
+        if(inputWeight < 50){
+            System.Console.WriteLine("Weight entered should greater than 50, please try again");
+            continue;
+            }
         break;
         } catch {
             System.Console.WriteLine("Numbers are needed. Please try again");
         }
         }
-        newRunningLog.calcPace();
-        newRunningLog.calcCaloriesBurned();
-        newRunningLog.calcBMI();
-        Logs.AddRunninglogList(newRunningLog);
-        SaveLog(Logs);
+
+        Logs.AddNewLog(inputRunningDate, inputDuration, inputDistance, inputWeight);
+        Logs.SaveLogs();
     }
 
     private void EditLogs(RunningLogs Logs){
-        System.Console.WriteLine("Please enter the log number you want to edit, Q to return: ");
         int logItem = 0;
         while(true){
+
+            System.Console.WriteLine("Please enter the log number you want to edit, Q to return: ");
             string command = Console.ReadLine();
    
             if (command == "Q" || command == "q"){
@@ -110,13 +109,13 @@ public class LogProcessUI
             }
             
             try{
-             logItem = Int32.Parse(command);
+             logItem = int.Parse(command);
              if (logItem <1 || logItem > Logs.GetRunningLogList().Count()){
                 System.Console.WriteLine("Item number entered is out of range. Please try again");
                 continue;
              }
             EditItem(logItem, Logs);
-            SaveLog(Logs);
+            // Logs.SaveLog();
              break;
             } catch {
                 System.Console.WriteLine("Please enter a number.");
@@ -130,27 +129,30 @@ public class LogProcessUI
 
     private void EditItem(int logItem, RunningLogs Logs){
             while (true){
+                double inputDistance = 0;
+                double inputDuration = 0;
                 System.Console.WriteLine("Please select item to be edited\n1. Duration\n2. Distance\n3. Delete\n4. Exit");
                 string inputNumber = Console.ReadLine();
                 if(inputNumber == "1"){
-                EnterDuration(logItem, Logs);
-                Logs.GetRunningLogList()[logItem-1].calcPace();
-                Logs.GetRunningLogList()[logItem-1].calcCaloriesBurned();
-                // Logs.GetRunningLogList()[logItem-1].calcBMI();
-                // SaveLog(Logs);
-                // break;
+                    inputDuration = EnterDuration();
+                    Logs.EditLogDuration(logItem-1, inputDuration);
+                    Logs.SaveLogs();
+                    // Logs.GetRunningLogList()[logItem-1].calcBMI();
+                    // Logs.SaveLogs();
+                    continue;
                 }
                 else if(inputNumber == "2"){
-                EnterDistance(logItem, Logs);
-                Logs.GetRunningLogList()[logItem-1].calcPace();
-                Logs.GetRunningLogList()[logItem-1].calcCaloriesBurned();
+                inputDistance = EnterDistance();
+                Logs.EditLogDistance(logItem-1, inputDistance);
+                Logs.SaveLogs();
                 // Logs.GetRunningLogList()[logItem-1].calcBMI();
-                // SaveLog(Logs);                  
-                // continue;
+                            
+                continue;
                 }
                 else if(inputNumber =="3"){
-                    Logs.GetRunningLogList().RemoveAt(logItem - 1);
-                    // SaveLog(Logs);
+                    Logs.RemoveLog(logItem-1);
+                    Logs.SaveLogs();
+                    // RunningLogs.SaveLogs(Logs); 
                     System.Console.WriteLine("Deleted selected log. Press any key to continue.");
                     Console.ReadKey();
                     break;
@@ -163,83 +165,56 @@ public class LogProcessUI
                     System.Console.WriteLine("Illegal input. Please try again.");
                 }
                 
-            }        
+            }     
+                
     }
 
-    private void EnterDistance(Running newRunningLog){
+    private double EnterDistance(){
+        double distance = 0;
         while(true){
-        System.Console.WriteLine("Please enter distance in miles with max 2 decimals: ");
-        try{
-        newRunningLog.Distance = Math.Round(double.Parse(Console.ReadLine()), 2);
-        break;
-        } catch {
-            System.Console.WriteLine("Numbers are needed. Please try again");
-        }
+            System.Console.WriteLine("Please enter distance in miles with max 2 decimals: ");
+                try{
+                    string strDistance = Console.ReadLine();
+                    distance = Math.Round(double.Parse(strDistance), 2);
+                    if(distance <= 0){
+                        System.Console.WriteLine("Distance should be greater than 0. Please try again");
+                        continue;
+                    }
+                    break;
+                } catch {
+                    System.Console.WriteLine("Numbers are needed. Please try again");
+                    continue;
+                }
 
         }
+        return distance;
+        
     }
 
-        private void EnterDistance(int logItem, RunningLogs Logs){
+
+
+    private double EnterDuration(){
+        double duration=0;
         while(true){
-        System.Console.WriteLine("Please enter distance in miles with max 2 decimals: ");
-        try{
-        Logs.GetRunningLogList()[logItem -1].Distance = Math.Round(double.Parse(Console.ReadLine()), 2);
+            System.Console.WriteLine("Please enter duration in minutes with max 2 decimals: ");
+                try{
 
-        break;
-        } catch {
-            System.Console.WriteLine("Numbers are needed. Please try again");
+                string strDuration =Console.ReadLine();
+                duration = Math.Round(double.Parse(strDuration), 2);
+                if (duration <= 0){
+                    System.Console.WriteLine("Duration should be greater than 0. Please try again");
+                    continue;            
+                }
+                break;
+            } catch{
+                System.Console.WriteLine("Numbers are needed. Please try again");
+                continue;
+            }
         }
 
-        }
-
+        return duration;
+        
     }
-
-    private void EnterDuration(Running newRunningLog){
-        while(true){
-        System.Console.WriteLine("Please enter duration in decimal minutes: ");
-        try{
-        double inputDuration = double.Parse(Console.ReadLine());
-        // double min =double.Parse( inputDuration.Split("/")[0]);
-        // double sec = double.Parse(inputDuration.Split("/")[1]);
-        newRunningLog.Duration =Math.Round(inputDuration, 2);
-        break;
-        } catch{
-            System.Console.WriteLine("Numbers are needed. Please try again");
-        }
-
-        }
-    }
-
-        private void EnterDuration( int logItem , RunningLogs Logs){
-        while(true){
-        System.Console.WriteLine("Please enter duration in decimal minutes: ");
-        try{
-        double inputDuration = double.Parse(Console.ReadLine());
-        // double min =double.Parse( inputDuration.Split("/")[0]);
-        // double sec = double.Parse(inputDuration.Split("/")[1]);
-        Logs.GetRunningLogList()[logItem -1 ].Duration =Math.Round(inputDuration, 2);
-
-        break;
-        } catch{
-            System.Console.WriteLine("Numbers are needed. Please try again");
-        }
-
-        }
-
-    }
-
-
-
-
-
-    private void SaveLog(RunningLogs Logs){
-        Logs.GetRunningLogList().Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
-        string fileName = Logs.GetUser().Username + "-runninglogs.txt";
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        var logJson = JsonSerializer.Serialize(Logs, options);
-        File.WriteAllText(fileName, logJson);
-    }
-
     private void ReviewLog(RunningLogs Logs){     
             while(true){
             Console.WriteLine();
