@@ -15,7 +15,7 @@ public class User{
     }
 
     public bool LoginPasswordVerify(string password){
-        return password == Password;
+        return password.Equals(Password);
     }
 
     public bool LoginUsernameVerify(string username){
