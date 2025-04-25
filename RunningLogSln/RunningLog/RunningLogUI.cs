@@ -42,7 +42,7 @@ public class RunningLogUI
                 break;
             } else if(opiton == "3"){
                 System.Console.WriteLine("Goodbye!");
-                // Console.Read();
+                
                 Environment.Exit(0);
             } else{
                 System.Console.WriteLine("Illegal input, please try again");

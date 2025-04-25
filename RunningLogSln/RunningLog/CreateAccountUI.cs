@@ -16,8 +16,8 @@ public class CreateAccountUI
 
     public void Show(){
         
-        // User tempUser = new User();
-        // username
+        
+        // username input
         while(true){
         System.Console.WriteLine("Please input username: ");
         string username = Console.ReadLine().Trim();
@@ -34,7 +34,7 @@ public class CreateAccountUI
            
         }
 
-    //   password
+        // password input
         while(true){
             System.Console.WriteLine("Please enter password: ");
             string pswd = PswdProcess();
@@ -50,7 +50,7 @@ public class CreateAccountUI
             continue;
 
         }
-// age input
+       // age input
         while(true){
             System.Console.WriteLine("Please input your age: ");
             string ageStr = Console.ReadLine().Trim();
@@ -86,7 +86,7 @@ public class CreateAccountUI
             }
         }
 
-//  height input
+        //  height input
         while(true){
             System.Console.WriteLine("Please input your height in inches: ");
             string heightStr = Console.ReadLine().Trim();

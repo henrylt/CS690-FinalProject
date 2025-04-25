@@ -10,7 +10,7 @@ public class Running{
     [JsonInclude]
     private double _caloriesBurned;
 
-    // private double _weight;
+    
     private double _height;
    
     [JsonInclude]
@@ -19,9 +19,9 @@ public class Running{
     public double Duration {set; get;}
     public double Distance {set; get;}
     public double Weight {set; get;}
-    // public double Height {set; get;}
+ 
 
-    // public double Height{set{_height = value;}}
+    
 
     public DateTime RunningDate {get; set;}
 

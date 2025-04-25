@@ -23,9 +23,6 @@ public class RunningLogs{
         _user = user;
     }
 
-    // public void AddRunninglogList(Running running){
-    //     _runninglogList.Add(running);
-    // }
 
     public User GetUser(){
         return _user;
@@ -34,7 +31,7 @@ public class RunningLogs{
     public List<Running> GetRunningLogList(){
         return _runninglogList;
     }
-
+    // get latest 7 days log
     public List<Running> GetLatestSevendays(){
         List<Running> LatestLogs = new List<Running>();
         int length = _runninglogList.Count;
@@ -51,7 +48,7 @@ public class RunningLogs{
         } 
         return LatestLogs;
     }
-
+    //get running logs in monthly
     public List<Dictionary<string, List<Running>>> GetMonthlyLogs(){
         List<Dictionary<string, List<Running>>> monthLogsList = new List<Dictionary<string, List<Running>>>();
         if(_runninglogList.Count <= 0 ){
@@ -97,6 +94,8 @@ public class RunningLogs{
         return monthLogsList;
      
     }
+
+    // get running logs in weekly
     public List<Dictionary<string, List<Running>>> GetWeeklyLogs(){
         CultureInfo myCI = new CultureInfo("en-US");
         Calendar myCal = myCI.Calendar;
@@ -153,7 +152,7 @@ public class RunningLogs{
     
 
 
-    
+    //get running logs report data 
     public List<double> GetSummary(List<Running> runningsList){
         List<double> summaries = new List<double>();
         var maxDistanceLog = runningsList.MaxBy(x => x.Distance);
@@ -195,7 +194,7 @@ public class RunningLogs{
 
 
     }
-
+    // input a log
     public void AddNewLog(DateTime runningDate, double duration, double distance, double weight){
         Running newLog = new Running();
         newLog.SetHeight(_user.Height);
@@ -210,25 +209,25 @@ public class RunningLogs{
         _runninglogList.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
 
     }
-
+    // edit running duration of a selected log
     public void EditLogDuration(int logItem, double duration){     
         _runninglogList[logItem].Duration = duration;
         _runninglogList[logItem].calcPace();
         _runninglogList[logItem].calcCaloriesBurned();
 
     }
-
+    // edit running distance of a selected log
     public void EditLogDistance(int logItem, double distance){
         _runninglogList[logItem].Distance = distance;
         _runninglogList[logItem].calcPace();
         _runninglogList[logItem].calcCaloriesBurned();
 
     }
-
+    // delete selected log
     public void RemoveLog(int logItem){
         _runninglogList.RemoveAt(logItem);
     }
-
+    // save log data to a file
     public void SaveLogs(){
         if(_runninglogList.Count > 0){
             _runninglogList.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
@@ -238,6 +237,7 @@ public class RunningLogs{
         var logJson = JsonSerializer.Serialize(this, options);
         File.WriteAllText(fileName, logJson);   
     }
+    // load user and log data from a file
     public static bool LoadDataFromFile(string fileName, out RunningLogs loadedrunningLogs){
 
         try {

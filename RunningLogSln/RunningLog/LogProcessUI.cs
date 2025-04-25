@@ -6,7 +6,7 @@ using System.Text.Json;
 
 public class LogProcessUI
 {
-    // public RunningLogs Logs {get; set;}
+    
 
     public void Show(RunningLogs Logs){
         Console.Clear();
@@ -30,7 +30,7 @@ public class LogProcessUI
                 }
                 EditLogs(Logs);
 
-                // break;
+                
 
             } else if(opitonInput == "3"){
 
@@ -39,7 +39,7 @@ public class LogProcessUI
                 
             } else if(opitonInput == "4"){
                 System.Console.WriteLine("Goodbye!");
-                // Console.Read();
+               
                 Environment.Exit(0);
             }
             else{
@@ -115,7 +115,7 @@ public class LogProcessUI
                 continue;
              }
             EditItem(logItem, Logs);
-            // Logs.SaveLog();
+            
              break;
             } catch {
                 System.Console.WriteLine("Please enter a number.");
@@ -137,28 +137,27 @@ public class LogProcessUI
                     inputDuration = EnterDuration();
                     Logs.EditLogDuration(logItem-1, inputDuration);
                     Logs.SaveLogs();
-                    // Logs.GetRunningLogList()[logItem-1].calcBMI();
-                    // Logs.SaveLogs();
+          
                     continue;
                 }
                 else if(inputNumber == "2"){
                 inputDistance = EnterDistance();
                 Logs.EditLogDistance(logItem-1, inputDistance);
                 Logs.SaveLogs();
-                // Logs.GetRunningLogList()[logItem-1].calcBMI();
+            
                             
                 continue;
                 }
                 else if(inputNumber =="3"){
                     Logs.RemoveLog(logItem-1);
                     Logs.SaveLogs();
-                    // RunningLogs.SaveLogs(Logs); 
+                    
                     System.Console.WriteLine("Deleted selected log. Press any key to continue.");
                     Console.ReadKey();
                     break;
                 }
                 else if(inputNumber == "4"){
-                    // Show(Logs);
+                 
                     break;
                 }
                 else {
@@ -261,7 +260,7 @@ public class LogProcessUI
                 
                 Console.ReadKey();
              
-                // continue;
+                
                 
             }else if(inputOption == "3"){
                 if( Logs.GetWeeklyLogs().Count <=0){
@@ -300,14 +299,14 @@ public class LogProcessUI
     private void PrintReport(List<double> summaries){
                 System.Console.WriteLine("Max distance is " + summaries[0] + " miles, min distance is " + summaries[1] + 
                 " miles, total distance is " + summaries[2] + " miles, average distance is " + summaries[3] + " miles");
-                // System.Console.WriteLine("Min distance is " + summaries[1] + " miles");
+                
                 System.Console.WriteLine("Max duration is " + summaries[4] + " minutes, min duration is " + summaries[5] + 
                 " minutes, total duration is " + summaries[6] + " minutes, average duration is " + summaries[7] + " minutes");
                 System.Console.WriteLine("Fastest pace is " + summaries[8] + " minutes/mile, slowest pace is " + summaries[9] + 
                 " minutes/mile, average pace is " + summaries[10] + " minutes/mile");
                 System.Console.WriteLine("Max calories burned is " + summaries[11] + " calories, min calories burned is " + summaries[12] + 
                 " calories, total calories burned is " + summaries[13] + " calories, average calories burned is " + summaries[14] + " calories");
-                // System.Console.WriteLine("BMI change is " + summaries[15]);
+                
     }
 
     private void PeriodReport( List<Dictionary<string, List<Running>>> LogsList, RunningLogs Logs)

@@ -15,7 +15,7 @@ public class RunningLogsTest
     public void UserExistTest()
     {
         string fileName = "usertest-runninglogs.txt";
-        // FileStream fs = File.Create(fileName);
+     
       
         Assert.True(User.IsUsernameExist(fileName));
         Assert.False(User.IsUsernameExist("somefile.txt"));
@@ -268,13 +268,13 @@ public class RunningLogsTest
         r3.calcPace();
         r3.calcCaloriesBurned();
         r3.calcBMI();
-
+        // a day not in lastest 7 days
         Running mr3 = new Running();
         mr3.SetHeight(user1.Height);
         mr3.Duration = 60;
         mr3.Distance = 5.4;
         mr3.Weight =160;
-        mr3.RunningDate =  DateTime.Today;
+        mr3.RunningDate =  DateTime.Today.AddDays(-10);
         mr3.calcPace();
         mr3.calcCaloriesBurned();
         mr3.calcBMI();
@@ -289,6 +289,8 @@ public class RunningLogsTest
         samplerunningLogs.GetRunningLogList().Add(r1);
         samplerunningLogs.GetRunningLogList().Add(r2);
         samplerunningLogs.GetRunningLogList().Add(r3);
+        // add a day not in the last 7 days
+        samplerunningLogs.GetRunningLogList().Add(mr3);
         samplerunningLogs.GetRunningLogList().Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
         
         List<Running> mSample = new List<Running>();
@@ -298,7 +300,7 @@ public class RunningLogsTest
         mSample.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
         // Then
         var sampleRunningListJson = JsonSerializer.Serialize(sampleRunningList);
-        var gotRunningListJson = JsonSerializer.Serialize(samplerunningLogs.GetRunningLogList());
+        var gotRunningListJson = JsonSerializer.Serialize(samplerunningLogs.GetLatestSevendays());
         var mSampleJson = JsonSerializer.Serialize(mSample);
         Assert.Equal(sampleRunningListJson, gotRunningListJson);
         Assert.NotEqual(mSampleJson, gotRunningListJson);
