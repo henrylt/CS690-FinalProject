@@ -14,7 +14,7 @@ public class LogInUI
         while(count > 0){
             System.Console.WriteLine("Please enter user name: ");
             string username = Console.ReadLine().Trim();
-            if(!User.IsUsernameExist(username)){
+            if(!User.IsUsernameExist(username + "-runninglogs.txt")){
                 if(count <= 1){
                     System.Console.WriteLine("You have entered wrong username or password 3 times. Application will exit.");
                     System.Console.WriteLine("Press any key to continue");
