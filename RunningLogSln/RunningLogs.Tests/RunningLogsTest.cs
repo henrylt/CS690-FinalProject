@@ -3,7 +3,6 @@ using RunningLog;
 using System.IO;
 using System.Security.Cryptography;
 using System.Globalization;
-// using Newtonsoft.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -190,26 +189,22 @@ public class RunningLogsTest
         bool result = RunningLogs.LoadDataFromFile(fileName, out runningLogs);
         bool result2 = RunningLogs.LoadDataFromFile(fileName2, out runningLogs2);
         
-        // var samleJson = JsonConvert.SerializeObject(sampleLogs);
-        // var loadedJson = JsonConvert.SerializeObject(runningLogs);
-        // var modifiedJson =  JsonConvert.SerializeObject(modifiedRunningLogs);
+
         var samleJson = JsonSerializer.Serialize(sampleLogs);
         var loadedJson = JsonSerializer.Serialize(runningLogs);
         var modifiedJson = JsonSerializer.Serialize(modifiedRunningLogs);
 
-
+        // data load from file test
         Assert.True(result);
         Assert.False(result2);
         Assert.Equal(runningLogs2, null);
         Assert.Equal(samleJson, loadedJson);
         Assert.NotEqual(loadedJson, modifiedJson);
-        // Assert.Equal(sampleLogs.GetRunningLogList()[0].Duration, runningLogs.GetRunningLogList()[0].Duration);
-        // Assert.NotEqual(modifiedJson, samleJson);
-        // GetUser test
+
         var samleUserJson = JsonSerializer.Serialize(user1);
         var modifiedUserJson = JsonSerializer.Serialize(user2);
         var loadedUserJson = JsonSerializer.Serialize(runningLogs.GetUser());
-        
+        // GetUser test
         Assert.Equal(samleUserJson, loadedUserJson);
         Assert.NotEqual(modifiedUserJson, loadedUserJson);
 
@@ -230,7 +225,7 @@ public class RunningLogsTest
     public void GetReportLogLatestDaysSummaryTest()
     {
         // Given
-        // string fileName = "test2-runninglogs.txt";
+
         RunningLogs samplerunningLogs = new RunningLogs();
         User user1 = new User();
         user1.Username = "test2";
