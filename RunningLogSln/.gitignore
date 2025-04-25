@@ -20,7 +20,7 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
+# [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -30,7 +30,7 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
+# [Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
@@ -483,5 +483,4 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
-# don't ignore txt files for unit test
-![Bb]in/Debug/net8.0/*.txt
+
