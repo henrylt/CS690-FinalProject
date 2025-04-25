@@ -1,0 +1,30 @@
+{
+  "_user": {
+    "Username": "test4",
+    "Password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+    "Gender": "M",
+    "Age": 34,
+    "Height": 68,
+    "Weight": 161
+  },
+  "_runninglogList": [
+    {
+      "Duration": 36,
+      "Distance": 3.2,
+      "Weight": 160,
+      "RunningDate": "2025-04-23T00:00:00",
+      "_pace": 11.25,
+      "_caloriesBurned": 389,
+      "_BMI": 24.33
+    },
+    {
+      "Duration": 50,
+      "Distance": 4.4,
+      "Weight": 160,
+      "RunningDate": "2025-04-24T00:00:00",
+      "_pace": 11.36,
+      "_caloriesBurned": 535,
+      "_BMI": 24.33
+    }
+  ]
+}
