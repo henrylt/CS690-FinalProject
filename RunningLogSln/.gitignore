@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# don't ignore txt files for unit test
+![Bb]in/Debug/net8.0/*.txt

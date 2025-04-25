@@ -207,6 +207,7 @@ public class RunningLogs{
         newLog.calcCaloriesBurned();
         newLog.calcBMI();        
         _runninglogList.Add(newLog);
+        _runninglogList.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
 
     }
 
@@ -233,7 +234,7 @@ public class RunningLogs{
             _runninglogList.Sort((log1, log2) => DateTime.Compare(log1.RunningDate, log2.RunningDate));
         }
         string fileName = _user.Username + "-runninglogs.txt";
-        var options = new JsonSerializerOptions { WriteIndented = true };
+        var options = new JsonSerializerOptions { WriteIndented = true};
         var logJson = JsonSerializer.Serialize(this, options);
         File.WriteAllText(fileName, logJson);   
     }

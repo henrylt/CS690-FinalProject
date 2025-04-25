@@ -25,7 +25,7 @@ public class CreateAccountUI
             System.Console.WriteLine("Input is empty, please try again.");
             continue;
         }
-        if (!User.IsUsernameExist(username)){
+        if (!User.IsUsernameExist(username + "-runninglogs.txt")){
             _runningLogs.GetUser().Username = username;
             break;
 
